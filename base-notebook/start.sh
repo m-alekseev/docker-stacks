@@ -90,6 +90,12 @@ if [ $(id -u) == 0 ] ; then
         usermod  -g $NB_GID -aG 100 $NB_USER
     fi
 
+    # Symlink Hadoop NFS Gateway share into user's directory
+    if [[ -d /opt/hdp-nfs/user/$NB_USER ]]; then
+        echo "Symlinking nfs to user's directory"
+        ln -s /opt/hdp-nfs/user/$NB_USER/ /home/$NB_USER/persistent
+    fi
+
     # Enable sudo if requested
     if [[ "$GRANT_SUDO" == "1" || "$GRANT_SUDO" == 'yes' ]]; then
         echo "Granting $NB_USER sudo access and appending $CONDA_DIR/bin to sudo PATH"
